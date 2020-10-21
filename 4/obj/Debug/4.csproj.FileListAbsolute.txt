@@ -7,3 +7,4 @@ C:\Users\Дмитрий\source\repos\4\4\obj\Debug\4.csproj.GenerateResource.cac
 C:\Users\Дмитрий\source\repos\4\4\obj\Debug\4.csproj.CoreCompileInputs.cache
 C:\Users\Дмитрий\source\repos\4\4\obj\Debug\3.exe
 C:\Users\Дмитрий\source\repos\4\4\obj\Debug\3.pdb
+C:\Users\Дмитрий\source\repos\4\4\obj\Debug\4.csprojAssemblyReference.cache

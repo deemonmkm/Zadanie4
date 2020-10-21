@@ -4,83 +4,102 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using Microsoft.VisualBasic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace _4
 {
     public partial class Form1 : Form
     {
-        struct Books
+        struct books
         {
-            public string id;
+            public int id;
             public string name;
-            public int author;
-            public int genre;
-            public string price;
+            public string author;
+            public string genre;
+            public int price;
             public int readers;
             public int year;
             public int l_date;
             };
 
-        Books[] massiv;
-        public int n;
+        List <books> spisok = new List<books> ();
+        StreamReader readfl;
+        StreamWriter writefl;
 
         void Otbor()
         {
+            string tx = textBox1.Text;
+            var otbor = from x in spisok where x.author == tx select x;
             dataGridView1.Rows.Clear();
-            string k = textBox1.Text;
-            foreach (var t in massiv)
-                if (t.type_plane == k)
-                {
-                    dataGridView1.Rows.Add(t.n_flight, t.dest, t.b_time, t.time_on_way, t.type_plane, t.ticket_cost, t.number_seats, t.time_dest, t.procceds);
-                }
+            foreach (var t in otbor)
+                dataGridView1.Rows.Add(t.id, t.name, t.author, t.genre, t.price, t.readers, t.year, t.l_date);
         }
-        int Time_dest(int a, int b)
+        void Sort()
         {
-            return a + b;
+            var sort = from x in spisok orderby x.author select x;
+            dataGridView1.Rows.Clear();
+            foreach ( var t in sort)
+                dataGridView1.Rows.Add(t.id, t.name, t.author, t.genre, t.price, t.readers, t.year, t.l_date);
         }
-        int Proceeds(int a, int b)
+        void Vivod()
         {
-            return a * b;
+            string fl, result;
+                fl = Microsoft.VisualBasic.Interaction.InputBox("Введите имя файла");
+            writefl = File.CreateText(fl + ".txt");
+            result = string.Format("{0,12}{1,5}{2,8}{3,19}{4,7}", "1", "2", "3", "4", "5");
+            writefl.WriteLine(result);
+            for (int k = 0; k < dataGridView1.Rows.Count - 1; k++)
+            {
+                result = string.Format("{0,12}{1,5}{2,8}{3,19}{4,7}",
+                    dataGridView1.Rows[k].Cells[0].Value,
+                    dataGridView1.Rows[k].Cells[1].Value,
+                    dataGridView1.Rows[k].Cells[2].Value,
+                    dataGridView1.Rows[k].Cells[3].Value);
+                writefl.WriteLine(result);
+            }
+            writefl.Close();
         }
+
         public Form1()
         {
-            string[] rows;
-            
-            InitializeComponent();
 
-            if (File.Exists("planes.txt"))
+            InitializeComponent();
+            string str;
+            if (File.Exists("books.txt"))
             {
-                
-                StreamWriter writefl;
-                rows = File.ReadAllLines("planes.txt");
-                n = rows.Length;
-                massiv = new books[n];
+                readfl = new StreamReader("books.txt");
             }
             else
             {
                 MessageBox.Show("Файл не найден");
                 return;
             }
-            for (int i = 0; i < n; i++)
+            while (readfl.EndOfStream == false)
             {
-                string[] str = rows[i].Split(';');
-                massiv[i].n_flight = str[0];
-                massiv[i].dest = str[1];
-                massiv[i].b_time = int.Parse(str[2]);
-                massiv[i].time_on_way = int.Parse(str[3]);
-                massiv[i].type_plane = str[4];
-                massiv[i].ticket_cost = int.Parse(str[5]);
-                massiv[i].number_seats = int.Parse(str[6]);
-                massiv[i].time_dest = Time_dest(massiv[i].b_time, massiv[i].time_on_way);
-                massiv[i].procceds = Proceeds(massiv[i].ticket_cost, massiv[i].number_seats);
-
+                books book;
+                str = readfl.ReadLine();
+                string[] s = str.Split(';');
+                book.id = Convert.ToInt32(s[0]);
+                book.name = s[1];
+                book.author = s[2];
+                book.genre = s[3];
+                book.price = Convert.ToInt32(s[4]);
+                book.readers = Convert.ToInt32(s[5]);
+                book.year = Convert.ToInt32(s[6]);
+                book.l_date = Convert.ToInt32(s[7]);
+                spisok.Add(book);
             }
-
+            readfl.Close();
+            dataGridView1.Rows.Clear();
+            foreach (var t in spisok)
+                dataGridView1.Rows.Add(t.id, t.name, t.author, t.genre, t.price, t.readers, t.year, t.l_date);
         }
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -89,12 +108,7 @@ namespace _4
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Print();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Sort();
+           
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -104,7 +118,17 @@ namespace _4
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Otbor();
+          
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
