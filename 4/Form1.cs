@@ -51,16 +51,20 @@ namespace _4
             string fl, result;
                 fl = Microsoft.VisualBasic.Interaction.InputBox("Введите имя файла");
             writefl = File.CreateText(fl + ".txt");
-            result = string.Format("{0,12}{1,5}{2,8}{3,19}{4,7}", "1", "2", "3", "4", "5");
+            result = string.Format("{0,2}{1,20}{2,10}{3,30}{4,5}{5,3}{6,5}{7,5}", "0", "1", "2", "3", "4", "5", "6", "7");
             writefl.WriteLine(result);
             for (int k = 0; k < dataGridView1.Rows.Count - 1; k++)
             {
-                result = string.Format("{0,12}{1,5}{2,8}{3,19}{4,7}",
+                result = string.Format("{0,2}{1,20}{2,10}{3,30}{4,5}{5,3}{6,5}{7,5}",
                     dataGridView1.Rows[k].Cells[0].Value,
                     dataGridView1.Rows[k].Cells[1].Value,
                     dataGridView1.Rows[k].Cells[2].Value,
-                    dataGridView1.Rows[k].Cells[3].Value);
-                writefl.WriteLine(result);
+                    dataGridView1.Rows[k].Cells[3].Value,
+                    dataGridView1.Rows[k].Cells[4].Value,
+                    dataGridView1.Rows[k].Cells[5].Value,
+                    dataGridView1.Rows[k].Cells[6].Value,
+                    dataGridView1.Rows[k].Cells[7].Value);
+            writefl.WriteLine(result);
             }
             writefl.Close();
         }
@@ -118,7 +122,7 @@ namespace _4
 
         private void button3_Click(object sender, EventArgs e)
         {
-          
+            Otbor();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -128,7 +132,12 @@ namespace _4
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            Vivod();
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Sort();
         }
     }
 }
